@@ -1,0 +1,6 @@
+export * from './IAddress'
+export * from './ICategory'
+export * from './IError'
+export * from './INetwork'
+export * from './IProduct'
+export * from './IStore'
