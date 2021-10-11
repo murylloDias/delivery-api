@@ -1,8 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express'
-import { celebrate, Joi, Segments } from 'celebrate'
+import { celebrate, Joi, Segments, errors } from 'celebrate'
 import { Container } from 'typedi'
 import StoreService from '../../services/store'
 import { Logger } from 'winston'
+import upload from '../middlewares/upload'
 
 const route = Router()
 
@@ -63,6 +64,21 @@ export default (app: Router) => {
         const storeServiceInstance = Container.get(StoreService)
         const newCategory = await storeServiceInstance.addCategory(req.params.id, req.body)
         res.status(200).json(newCategory)
+      } catch (e) {
+        return next(e)
+      }
+    }
+  )
+
+  route.post(
+    '/importProduct/:id',
+    upload.single('file'),
+
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const storeRecordInstance = Container.get(StoreService)
+        const data = storeRecordInstance.importProduct(req.params.id, req.file?.filename)
+        res.status(200).json(data)
       } catch (e) {
         return next(e)
       }

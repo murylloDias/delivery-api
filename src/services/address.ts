@@ -1,7 +1,7 @@
 import { Inject, Service } from 'typedi'
 import { IAddress, IAddressService } from '../interfaces'
 
-@Service('addressService')
+@Service()
 export default class AddressService implements IAddressService {
   constructor(
     @Inject('addressModel')

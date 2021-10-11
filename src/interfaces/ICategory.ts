@@ -1,10 +1,9 @@
 import { IProduct } from ".";
 
 export interface ICategory {
-  id: object,
+  _id: object,
   name: string,
-  products: Array<object>,
-  idCategory: string
+  products: Array<object>
 }
 
 export interface ICategoryService {

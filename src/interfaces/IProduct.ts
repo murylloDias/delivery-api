@@ -1,9 +1,8 @@
 export interface IProduct {
-  id: object,
+  _id: object,
   name: string,
   price: number,
-  description: string,
-  idProduct: string
+  description: string
 }
 
 export interface IProductService {

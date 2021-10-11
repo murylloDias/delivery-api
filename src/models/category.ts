@@ -2,20 +2,20 @@ import { model, Schema } from 'mongoose'
 import { ICategory } from '../interfaces/ICategory'
 
 const CategorySchema = new Schema<ICategory>({
+  _id: {
+    type: String,
+    require: true,
+    trim: true
+  },
   name: {
     type: String,
     required: true,
     trim: true
   },
   products: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Product'
-  }],
-  idCategory: {
     type: String,
-    trim: true,
-    default: ''
-  }
+    ref: 'Product'
+  }]
 })
 
 export default model<ICategory>('Category', CategorySchema)

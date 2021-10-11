@@ -13,6 +13,7 @@ export default (app: Router) => {
     '/create',
     celebrate({
       [Segments.BODY]: Joi.object().keys({
+        _id: Joi.string().required(),
         name: Joi.string().required(),
       })
     }),

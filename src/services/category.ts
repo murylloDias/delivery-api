@@ -1,15 +1,15 @@
 import { Service, Inject } from 'typedi'
-import { IProduct, IProductService, ICategory, ICategoryService } from '../interfaces'
+import { IProduct, ICategory, ICategoryService } from '../interfaces'
+import ProductService from '../services/product'
 
-@Service('categoryService')
+@Service()
 export default class CategoryService implements ICategoryService {
   constructor(
     @Inject('categoryModel')
     private categoryModel: Models.CategoryModel,
     @Inject('logger')
     private logger: Models.Logger,
-    @Inject('productService')
-    private productService: IProductService
+    private productService: ProductService
   ) { }
 
   public async create(category: ICategory): Promise<ICategory> {

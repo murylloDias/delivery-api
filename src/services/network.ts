@@ -1,5 +1,6 @@
 import { Service, Inject } from 'typedi'
-import { IAddress, IStore, IStoreService, INetwork, INetworkService } from '../interfaces'
+import { IAddress, IStore, INetwork, INetworkService } from '../interfaces'
+import StoreService from './store'
 
 @Service()
 export default class NetworkService implements INetworkService {
@@ -8,8 +9,7 @@ export default class NetworkService implements INetworkService {
     private networkModel: Models.NetworkModel,
     @Inject('logger')
     private logger: Models.Logger,
-    @Inject('storeService')
-    private storeService: IStoreService
+    private storeService: StoreService
   ) { }
 
   public async create(network: INetwork, store: IStore, address: IAddress): Promise<INetwork> {

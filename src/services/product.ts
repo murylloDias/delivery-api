@@ -1,7 +1,7 @@
 import { Service, Inject } from 'typedi'
 import { IProduct, IProductService } from '../interfaces'
 
-@Service('productService')
+@Service()
 export default class ProductService implements IProductService {
   constructor(
     @Inject('productModel')

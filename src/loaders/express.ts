@@ -1,7 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express'
+import morgan from 'morgan'
 import routes from '../api'
 import config from '../config'
-import { IError } from '../interfaces/IError'
+import { IError } from '../interfaces'
 
 export default ({ app }: { app: express.Application }) => {
   app.get('/status', (req, res) => {
@@ -13,6 +14,8 @@ export default ({ app }: { app: express.Application }) => {
   })
 
   app.use(express.json())
+  app.use(express.urlencoded({ extended: true }))
+  app.use(morgan('dev'))
 
   app.use(config.api.prefix, routes())
 

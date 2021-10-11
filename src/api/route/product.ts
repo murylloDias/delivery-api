@@ -13,10 +13,10 @@ export default (app: Router) => {
     '/create',
     celebrate({
       [Segments.BODY]: Joi.object().keys({
+        _id: Joi.string().required(),
         name: Joi.string().required(),
         price: Joi.number().required(),
-        description: Joi.string().required(),
-        idProduct: Joi.string().required(),
+        description: Joi.string().required()
       })
     }),
 
