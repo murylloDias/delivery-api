@@ -7,7 +7,7 @@ export interface INetwork {
   email: string,
   website: string,
   urls: Array<string>,
-  stores: Array<object>
+  stores: Array<string>
 }
 
 export interface INetworkService {

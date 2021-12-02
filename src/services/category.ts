@@ -14,7 +14,7 @@ export default class CategoryService implements ICategoryService {
 
   public async create(category: ICategory): Promise<ICategory> {
     this.logger.info('Creating category db record')
-    const categoryRecord: ICategory = await this.categoryModel.create(category)
+    const categoryRecord = await this.categoryModel.create(category)
     return categoryRecord
   }
 
@@ -25,12 +25,14 @@ export default class CategoryService implements ICategoryService {
     return categoryRecord
   }
 
-  public async addProduct(id: string, product: IProduct): Promise<void> {
+  public async addProduct(id: string, product: IProduct): Promise<any> {
     this.logger.info('Add product to category')
     const productRecord = await this.productService.create(product)
 
     const categoryRecord = await this.categoryModel.findById(id)
-    categoryRecord?.products.push(productRecord.id)
+    categoryRecord?.products.push(productRecord._id!)
     await categoryRecord?.save()
+
+    return categoryRecord
   }
 }

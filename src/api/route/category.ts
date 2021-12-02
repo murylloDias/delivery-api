@@ -13,8 +13,8 @@ export default (app: Router) => {
     '/create',
     celebrate({
       [Segments.BODY]: Joi.object().keys({
-        _id: Joi.string().required(),
         name: Joi.string().required(),
+        integrationCode: Joi.string().required()
       })
     }),
     async (req: Request, res: Response, next: NextFunction) => {
@@ -57,7 +57,8 @@ export default (app: Router) => {
       [Segments.BODY]: Joi.object().keys({
         name: Joi.string().required(),
         price: Joi.number().required(),
-        description: Joi.string().required()
+        description: Joi.string().required(),
+        integrationCode: Joi.string().required()
       })
     }),
     async (req: Request, res: Response, next: NextFunction) => {

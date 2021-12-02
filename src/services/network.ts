@@ -15,7 +15,7 @@ export default class NetworkService implements INetworkService {
   public async create(network: INetwork, store: IStore, address: IAddress): Promise<INetwork> {
     const storeRecord = await this.storeService.create(store, address)
     network.stores = []
-    network.stores.push(storeRecord._id)
+    network.stores.push(storeRecord._id!)
 
     this.logger.info('Creating network db record')
     const networkRecord: INetwork = await this.networkModel.create(network)

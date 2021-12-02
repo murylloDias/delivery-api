@@ -32,7 +32,7 @@ const StoreSchema = new Schema<IStore>({
     ref: 'Address'
   },
   categories: [{
-    type: String,
+    type: Schema.Types.ObjectId,
     ref: 'Category'
   }]
 })

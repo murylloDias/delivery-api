@@ -48,6 +48,30 @@ export default (app: Router) => {
     }
   )
 
+  route.get(
+    '/:id',
+    celebrate({
+      [Segments.PARAMS]: Joi.object().keys({
+        id: Joi.string().required()
+      })
+    }),
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const storeServiceInstance = Container.get(StoreService)
+        if (await storeServiceInstance.checkID(req.params.id)) {
+          const storeRecord = await storeServiceInstance.getById(req.params.id)
+          res.status(200).json(storeRecord)
+        } else {
+          res.status(404).json({
+            message: 'Não foi possivel localizar a loja!'
+          })
+        }
+      } catch (e) {
+        next(e)
+      }
+    }
+  )
+
   route.put(
     '/addCategory/:id',
     celebrate({
@@ -55,15 +79,22 @@ export default (app: Router) => {
         id: Joi.string().required()
       }),
       [Segments.BODY]: Joi.object().keys({
-        name: Joi.string().required()
+        name: Joi.string().required(),
+        integrationCode: Joi.string().required()
       })
     }),
 
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const storeServiceInstance = Container.get(StoreService)
-        const newCategory = await storeServiceInstance.addCategory(req.params.id, req.body)
-        res.status(200).json(newCategory)
+        if (await storeServiceInstance.checkID(req.params.id)) {
+          const newCategory = await storeServiceInstance.addCategory(req.params.id, req.body)
+          res.status(200).json(newCategory)
+        } else {
+          res.status(404).json({
+            message: 'Não foi possivel localizar a loja!'
+          })
+        }
       } catch (e) {
         return next(e)
       }
@@ -72,13 +103,26 @@ export default (app: Router) => {
 
   route.post(
     '/importProduct/:id',
+    celebrate({
+      [Segments.PARAMS]: Joi.object().keys({
+        id: Joi.string().required()
+      })
+    }),
     upload.single('file'),
 
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const storeRecordInstance = Container.get(StoreService)
-        const data = storeRecordInstance.importProduct(req.params.id, req.file?.filename)
-        res.status(200).json(data)
+        if (await storeRecordInstance.checkID(req.params.id)) {
+          const data = await storeRecordInstance.importProduct(req.params.id, req.file?.filename!)
+          storeRecordInstance.deleteIntegrationFile(req.file?.filename!)
+          res.status(200).json(data)
+        } else {
+          storeRecordInstance.deleteIntegrationFile(req.file?.filename!)
+          res.status(404).json({
+            message: 'Não foi possivel localizar a loja!'
+          })
+        }
       } catch (e) {
         return next(e)
       }

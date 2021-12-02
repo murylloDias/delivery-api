@@ -13,10 +13,10 @@ export default (app: Router) => {
     '/create',
     celebrate({
       [Segments.BODY]: Joi.object().keys({
-        _id: Joi.string().required(),
         name: Joi.string().required(),
         price: Joi.number().required(),
-        description: Joi.string().required()
+        description: Joi.string().required(),
+        integrationCode: Joi.string().required()
       })
     }),
 
@@ -28,6 +28,22 @@ export default (app: Router) => {
         const productServiceInstance = Container.get(ProductService)
         const data = await productServiceInstance.create(req.body)
         res.status(201).json(data)
+      } catch (e) {
+        return next(e)
+      }
+    }
+  )
+
+  route.get(
+    '/list',
+    async (req: Request, res: Response, next: NextFunction) => {
+      const logger: Logger = Container.get('logger')
+      logger.info('Calling list-product endpoint')
+
+      try {
+        const productServiceInstance = Container.get(ProductService)
+        const data = await productServiceInstance.get()
+        res.status(200).json(data)
       } catch (e) {
         return next(e)
       }

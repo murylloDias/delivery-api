@@ -12,7 +12,12 @@ export default class ProductService implements IProductService {
 
   public async create(product: IProduct): Promise<IProduct> {
     this.logger.info('Creating product db record')
-    const productRecord: IProduct = await this.productModel.create(product)
+    const productRecord = await this.productModel.create(product)
     return productRecord
+  }
+
+  public async get(): Promise<IProduct[]> {
+    const products = await this.productModel.find().lean()
+    return products
   }
 }
